@@ -26,13 +26,13 @@ Copy file .env.example and rename it to .env
 ## Setup DB
 
 
-- Run migration to setup tables (directory: src/utils/database/knex/migrations)
+- Run migration to setup tables (directory: database/migrations)
 
 ```bash
   yarn knex:migrate:latest
 ```
 
-- Run migration to setup data (directory: src/utils/database/knex/seeds)
+- Run migration to setup data (directory: database/seeds)
 
 ```bash
   yarn knex:seed:run
