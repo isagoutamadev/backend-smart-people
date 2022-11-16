@@ -16,10 +16,6 @@ export class AuthService {
                 throw new HttpException("Email atau password salah", ResponseCode.UNPROCESSABLE_ENTITY);
             } else if (data.password !== encrypted) {
                 throw new HttpException("Email atau password salah", ResponseCode.UNPROCESSABLE_ENTITY);
-            } else if (!data.is_active) {
-                throw new HttpException("Akun anda belum aktif", ResponseCode.UNPROCESSABLE_ENTITY);
-            } else if (data.is_banned) {
-                throw new HttpException("Akun anda telah diblokir", ResponseCode.UNPROCESSABLE_ENTITY);
             }
 
             delete data.password;

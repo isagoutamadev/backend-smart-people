@@ -104,10 +104,6 @@ export class UserController implements Controller {
             const result = await this.service.create({
                 ...user,
                 created_by: auth.id,
-            }, 
-            {
-                ...employee,
-                created_by: auth.id
             });
             
             return response.created<User>(result, res);

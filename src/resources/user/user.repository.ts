@@ -1,4 +1,3 @@
-import { Employee } from "@/models/employee.model";
 import { User } from "@/models/user.model";
 import knex from "@/utils/knex/knex"
 import { Pagination, Paging } from "@/utils/responses/pagination.response";
@@ -107,18 +106,11 @@ export class UserRepository {
         }
     }
 
-    async create(user: User, employee: Employee): Promise<void> {
+    async create(user: User): Promise<void> {
         try {
-            await knex.transaction(async trx => {
-                await trx("m_employees").insert({
-                    ...employee,
-                    created_at: knex.raw("now()"),
-                });
-
-                await trx("m_users").insert({
-                    ...user,
-                    created_at: knex.raw("now()"),
-                });
+            await knex("m_users").insert({
+                ...user,
+                created_at: knex.raw("now()"),
             });
         } catch (error) {
             throw error;
