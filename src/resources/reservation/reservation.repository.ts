@@ -11,6 +11,7 @@ export class ReservationRepository {
                 "reservation.uuid",
                 "reservation.institution",
                 "reservation.pic",
+                "reservation.count",
                 "reservation.reservation_date",
                 "reservation.realization_date",
             ];
