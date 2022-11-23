@@ -1,7 +1,6 @@
 import { Reservation, SearchReservation } from "@/models/reservation.model";
 import knex from "@/utils/knex/knex"
 import { Pagination, Paging } from "@/utils/responses/pagination.response";
-import { Knex } from "knex";
 
 export class ReservationRepository {
     async get(search: SearchReservation, page: number, limit: number, sort?: string): Promise<Paging<Reservation>> {
@@ -14,7 +13,7 @@ export class ReservationRepository {
                 "reservation.pic",
                 "reservation.count",
                 "reservation.reservation_time",
-                knex.raw("max(o.created_at) as realization_time"),
+                knex.raw("min(o.created_at) as realization_time"),
             ];
 
             const query = knex("m_reservations as reservation").select(select);
@@ -69,11 +68,12 @@ export class ReservationRepository {
                 "reservation.id",
                 "reservation.uuid",
                 "reservation.institution",
+                "reservation.institution_leader",
                 "reservation.pic",
                 "reservation.count",
-                "reservation.reservation_date",
+                "reservation.reservation_time",
             ];
-            return await knex("m_reservations").where("uuid", uuid)
+            return await knex("m_reservations as reservation").select(select).where("uuid", uuid)
                 .whereNull("deleted_at").first();
         } catch (error) {
             throw error;
