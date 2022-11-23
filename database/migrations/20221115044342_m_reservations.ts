@@ -6,10 +6,10 @@ export async function up(knex: Knex): Promise<void> {
         table.increments("id").primary().notNullable();
         table.uuid("uuid").unique().notNullable();
         table.string("institution").notNullable();
+        table.string("institution_leader").notNullable();
         table.string("pic").notNullable();
         table.integer("count").unsigned().notNullable();
-        table.date("reservation_date").notNullable();
-        table.date("realization_date").nullable();
+        table.dateTime("reservation_time").notNullable();
         table.timestamps();
         table.timestamp("deleted_at").nullable();
     });

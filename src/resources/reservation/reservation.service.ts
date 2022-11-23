@@ -19,6 +19,7 @@ export class ReservationService {
         try {
             data.uuid = uuidV4();
             data.institution = String(data.institution).toUpperCase();
+            data.institution_leader = String(data.institution_leader).toUpperCase();
             data.pic = String(data.pic).toUpperCase();
             await this.repository.create(data);
             return data;

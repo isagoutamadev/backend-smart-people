@@ -34,7 +34,7 @@ export class DashboardRepository {
         try {
             const select: any[] = [
                 "reservation.id",
-                "reservation.reservation_date",
+                "reservation.reservation_time",
                 "reservation.count as total_count_reservation",
                 knex.raw("count(o.biometric) as total_count_realization"),
             ];
@@ -52,7 +52,7 @@ export class DashboardRepository {
             if (search.group_time === 'monthly') {
                 selectGraph.push(knex.raw("CONVERT_TZ(CONCAT(YEAR(reservation_date), '-', MONTH(reservation_date), '-15 17:00:00'),'UTC','UTC') as datetime"));
             } else {
-                selectGraph.push("reservation_date as datetime");
+                selectGraph.push("reservation_time as datetime");
             }
             const queryGraph = knex().select(selectGraph).from(knex.raw(`(${query.toQuery()}) data`)).groupByRaw("datetime").orderByRaw("datetime asc");
 

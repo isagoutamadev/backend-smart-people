@@ -10,10 +10,11 @@ export class ReservationRepository {
                 "reservation.id",
                 "reservation.uuid",
                 "reservation.institution",
+                "reservation.institution_leader",
                 "reservation.pic",
                 "reservation.count",
-                "reservation.reservation_date",
-                "reservation.realization_date",
+                "reservation.reservation_time",
+                knex.raw("max(o.created_at) as realization_time"),
             ];
 
             const query = knex("m_reservations as reservation").select(select);
@@ -64,6 +65,14 @@ export class ReservationRepository {
 
     async findByUUID(uuid: string): Promise<Reservation | undefined> {
         try {
+            const select = [
+                "reservation.id",
+                "reservation.uuid",
+                "reservation.institution",
+                "reservation.pic",
+                "reservation.count",
+                "reservation.reservation_date",
+            ];
             return await knex("m_reservations").where("uuid", uuid)
                 .whereNull("deleted_at").first();
         } catch (error) {

@@ -2,10 +2,10 @@ export interface Reservation {
     id?: number,
     uuid?: string,
     institution?: string,
+    institution_leader?: string,
     pic?: string,
     count?: number,
-    reservation_date?: Date,
-    realization_date?: Date,
+    reservation_time?: Date,
 }
 
 export interface SearchReservation {
