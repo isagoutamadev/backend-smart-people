@@ -45,4 +45,35 @@ export class ReservationRealizationRepository {
             throw error;
         }
     }
+
+    async find(search: SearchReservationRealization): Promise<ReservationRealization | undefined> {
+        try {
+            const select  = [
+                "o.biometric",
+            ];
+            const query = knex("o_reservation_realizations as o");
+            query.innerJoin("m_reservations as reservation", "reservation.id", "o.reservation_id");
+            query.whereNull("reservation.deleted_at");
+            if (search.reservation_uuid) {
+                query.where("reservation.uuid", search.reservation_uuid);
+            }
+            if (search.biometric) {
+                query.where("biometric", search.biometric);
+            }
+            return await query.first();
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async create(data: ReservationRealization): Promise<void> {
+        try {
+            await knex("o_reservation_realizations").insert({
+                ...data,
+                captured_date: knex.raw("now()"),
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
 }
