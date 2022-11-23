@@ -43,6 +43,7 @@ export class ReservationService {
     public update = async (data: Reservation): Promise<Reservation> => {
         try {
             data.institution = String(data.institution).toUpperCase();
+            data.institution_leader = String(data.institution_leader).toUpperCase();
             data.pic = String(data.pic).toUpperCase();
             await this.repository.update(data);
             return data;
