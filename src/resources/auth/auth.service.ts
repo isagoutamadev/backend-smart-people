@@ -10,7 +10,8 @@ export class AuthService {
     public login = async (user: User): Promise<JWT> => {
         try {            
             const encrypted = AuthHelper.encrypt(user.password);
-            const data = await this.repository.findByEmail(user.email || "");
+            const data = await this.repository.findByEmailOrUsername(user.username || "");
+            console.log(data);
 
             if (!data) {
                 throw new HttpException("Email atau password salah", ResponseCode.UNPROCESSABLE_ENTITY);
