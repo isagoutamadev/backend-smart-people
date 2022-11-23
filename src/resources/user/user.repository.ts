@@ -27,10 +27,6 @@ export class UserRepository {
                 .innerJoin("m_employees as employee", "employee.id", "user.employee_id")
                 .innerJoin("lt_roles as role", "role.id", "user.role_id");
 
-            if (search.role_id) {
-                query.where("user.role_id", search.role_id);
-            }
-
             if (search.email) {
                 query.whereILike("user.email", search.email);
             }

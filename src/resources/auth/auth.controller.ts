@@ -33,13 +33,6 @@ export class AuthController implements Controller {
             validate(LoginSchema, ReqType.BODY),
             this.login
         );
-        
-        this.router.post(
-            'auth/fcm',
-            authMiddleware(),
-            validate(FcmSchema, ReqType.BODY),
-            this.updateFCM
-        );
     }
 
     private login = async (
@@ -77,32 +70,6 @@ export class AuthController implements Controller {
             return response.global<User>(res, {
                 code: ResponseCode.OK,
                 result: auth,
-            });
-        } catch (err: any) {
-            return next(new HttpException(err.message, err.statusCode));
-        }
-    }
-    
-    private updateFCM = async (
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ): Promise<Response | void> => {
-        try {
-            const { auth } = res.app.locals;
-            const { device_id, fcm_token } = req.body;
-            await this.service.updateById({
-                id: auth.id,
-                device_id: String(device_id),
-                fcm_token: String(fcm_token),
-            });
-
-            return response.global<User>(res, {
-                code: ResponseCode.OK,
-                result: {
-                    device_id,
-                    fcm_token
-                },
             });
         } catch (err: any) {
             return next(new HttpException(err.message, err.statusCode));

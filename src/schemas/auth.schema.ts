@@ -1,8 +1,9 @@
 import Joi from "joi";
 
 export const LoginSchema = Joi.object({
-    email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).min(8).required(),
-    password: Joi.string().min(8).required()
+    // email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).min(8).required(),
+    username: Joi.string().alphanum().min(5).max(30).required(),
+    password: Joi.string().min(5).required()
 });
 
 export const RegisterSchema = Joi.object({

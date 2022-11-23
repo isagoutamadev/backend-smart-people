@@ -12,7 +12,6 @@ export class UserService {
     public getUsers = async (search: User, page: number, limit: number): Promise<Paging<User>> => {
         try {            
             const data = await this.repository.get({
-                role_id: search.role_id || undefined,
                 email: search.email ? `%${search.email}%` : undefined
             }, page, limit);
 
