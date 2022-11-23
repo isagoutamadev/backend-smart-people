@@ -6,11 +6,11 @@ export function authMiddleware() {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
             
-            const authorization = req.headers.authorization || "";
-            let token = authorization.replace("Basic ", "");
-            token = token.replace("Bearer ", "");
-            const decoded = AuthHelper.jwtDecode(token);
-            res.app.locals.auth = decoded;
+            // const authorization = req.headers.authorization || "";
+            // let token = authorization.replace("Basic ", "");
+            // token = token.replace("Bearer ", "");
+            // const decoded = AuthHelper.jwtDecode(token);
+            // res.app.locals.auth = decoded;
 
             return next();
         }
