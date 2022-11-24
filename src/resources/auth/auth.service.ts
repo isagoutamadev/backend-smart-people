@@ -11,7 +11,6 @@ export class AuthService {
         try {            
             const encrypted = AuthHelper.encrypt(user.password);
             const data = await this.repository.findByEmailOrUsername(user.username || "");
-            console.log(data);
 
             if (!data) {
                 throw new HttpException("Email atau password salah", ResponseCode.UNPROCESSABLE_ENTITY);
@@ -22,7 +21,7 @@ export class AuthService {
             delete data.password;
 
             return {
-                token: AuthHelper.jwtEncode({id: data.id}),
+                token: AuthHelper.jwtEncode({uuid: data.uuid}),
                 user: data
             }  
 
@@ -31,15 +30,15 @@ export class AuthService {
         }
     }
 
-    public getDetail = async (userId: string): Promise<User> => {
+    public getDetail = async (uuid: string): Promise<User> => {
         try {            
-            throw new HttpException("User tidak ditemukan", ResponseCode.UNPROCESSABLE_ENTITY);
-            // const data = await this.repository.findById(userId);
+            const data = await this.repository.findbyUUID(uuid);
+            
+            if (!data) {
+                throw new HttpException("User tidak ditemukan", ResponseCode.UNPROCESSABLE_ENTITY);
+            }
 
-            // if (!data) {
-            // }
-
-            // return data;
+            return data;
         } catch (error) {
             throw error;
         }
