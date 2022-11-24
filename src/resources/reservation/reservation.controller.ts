@@ -79,12 +79,13 @@ export class ReservationController implements Controller {
     ): Promise<Response | void> => {
         try {
 
-            const {institution, pic, sort_by, page, limit } = req.query;
+            const {uuid, institution, pic, sort_by, page, limit } = req.query;
 
             const search = {
                 institution, 
                 pic,
-                sort_by
+                sort_by,
+                uuid
             };
 
             // @ts-ignore

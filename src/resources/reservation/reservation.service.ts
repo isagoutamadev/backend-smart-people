@@ -76,7 +76,7 @@ export class ReservationService {
                 throw new HttpException("Reservation not found", ResponseCode.NOT_FOUND);
             }
 
-            if (reservation.deactifated_time) {
+            if (reservation.deactivated_time) {
                 throw new HttpException("Reservasi telah dinonaktifkan", ResponseCode.UNPROCESSABLE_ENTITY);
             }
 

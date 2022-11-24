@@ -7,11 +7,12 @@ export interface Reservation {
     count?: number,
     reservation_time?: Date,
     realization_time?: Date,
-    deactifated_time?: Date,
+    deactivated_time?: Date,
 }
 
 export interface SearchReservation {
     institution?: string,
+    uuid?: string,
     pic?: string,
     sort_by?: string,
 }

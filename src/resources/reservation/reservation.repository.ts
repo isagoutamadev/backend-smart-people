@@ -31,6 +31,10 @@ export class ReservationRepository {
 
       query.whereNull("reservation.deleted_at");
 
+      if (search.uuid) {
+          query.where("reservation.uuid", search.uuid);
+      }
+
       query.groupBy("reservation.id");
 
       // const sortBy = search.sort_by || "reservation.institution";
@@ -85,6 +89,8 @@ export class ReservationRepository {
         "reservation.pic",
         "reservation.count",
         "reservation.reservation_time",
+        "reservation.realization_time",
+        "reservation.deactivated_time",
       ];
       return await knex("m_reservations as reservation")
         .select(select)

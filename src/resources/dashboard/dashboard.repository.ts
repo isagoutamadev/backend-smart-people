@@ -12,6 +12,9 @@ export class DashboardRepository {
             ]);
             queryMain.leftJoin("o_reservation_realizations as o", "o.reservation_id", "reservation.id");
             queryMain.whereNull("reservation.deleted_at");
+            if (search.reservation_uuid) {
+                queryMain.where("reservation.uuid", search.reservation_uuid);
+            }
             queryMain.groupBy("reservation.id");
 
             const select = [
@@ -42,6 +45,11 @@ export class DashboardRepository {
             const query = knex("m_reservations as reservation").select(select);
             query.leftJoin("o_reservation_realizations as o", "o.reservation_id", "reservation.id");
             query.whereNull("reservation.deleted_at");
+
+            if (search.reservation_uuid) {
+                query.where("reservation.uuid", search.reservation_uuid);
+            }
+
             query.groupBy("reservation.id");
 
             const selectGraph: any[] = [

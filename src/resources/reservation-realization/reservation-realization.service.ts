@@ -20,7 +20,16 @@ export class ReservationRealizationService {
         try {
             const reservation = await this.reservationRepository.findByUUID(data.reservation_uuid);
             if (!reservation) {
-                throw new HttpException("Reservation not found", ResponseCode.CONFLICT);
+                throw new HttpException("Reservation not found", ResponseCode.NOT_FOUND);
+            }
+            console.log(reservation);
+
+            if (!reservation.realization_time) {
+                throw new HttpException("Reservasi belum diaktifasi", ResponseCode.UNPROCESSABLE_ENTITY);
+            }
+            
+            if (reservation.deactivated_time) {
+                throw new HttpException("Reservasi telah dinonaktifkan", ResponseCode.UNPROCESSABLE_ENTITY);
             }
             
             const existData = await this.repository.find(data);
