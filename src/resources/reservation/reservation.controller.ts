@@ -29,6 +29,12 @@ export class ReservationController implements Controller {
             this.get
         );
         
+        this.router.get(
+            '/current-active',
+            authMiddleware(),
+            this.findCurrentActive
+        );
+        
         this.router.post(
             '/',
             authMiddleware(),
@@ -56,6 +62,13 @@ export class ReservationController implements Controller {
             authMiddleware(),
             validate(UUIDSchema, ReqType.PARAMS),
             this.delete
+        );
+
+        this.router.post(
+            '/:uuid/activate',
+            authMiddleware(),
+            validate(UUIDSchema, ReqType.PARAMS),
+            this.activate
         );
     }
 
@@ -153,6 +166,40 @@ export class ReservationController implements Controller {
 
             // @ts-ignore
             const result = await this.service.delete(uuid);
+            
+            return response.ok<Reservation>(result, res);
+        } catch (err: any) {
+            return next(new HttpException(err.message, err.statusCode));
+        }
+    }
+    
+    private findCurrentActive = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+
+            // const { uuid } = req.params;
+
+            const result = await this.service.findCurrentActive();
+            
+            return response.ok<Reservation>(result, res);
+        } catch (err: any) {
+            return next(new HttpException(err.message, err.statusCode));
+        }
+    }
+    
+    private activate = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+
+            const { uuid } = req.params;
+
+            const result = await this.service.activate(uuid);
             
             return response.ok<Reservation>(result, res);
         } catch (err: any) {

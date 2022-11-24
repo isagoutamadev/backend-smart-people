@@ -6,6 +6,8 @@ export interface Reservation {
     pic?: string,
     count?: number,
     reservation_time?: Date,
+    realization_time?: Date,
+    deactifated_time?: Date,
 }
 
 export interface SearchReservation {

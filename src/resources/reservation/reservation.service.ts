@@ -56,4 +56,39 @@ export class ReservationService {
         await this.repository.deleteByUUID(uuid);
         return {};
     }
+    
+    public findCurrentActive = async (): Promise<Reservation> => {
+        try {
+            const data = await this.repository.findCurrentActive(); 
+            if (data) {
+                return data;
+            }
+            throw new HttpException("Not Found", ResponseCode.NOT_FOUND);
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    public activate = async (uuid: string): Promise<Reservation> => {
+        try {
+            const reservation = await this.repository.findByUUID(uuid);
+            if (!reservation) {
+                throw new HttpException("Reservation not found", ResponseCode.NOT_FOUND);
+            }
+
+            if (reservation.deactifated_time) {
+                throw new HttpException("Reservasi telah dinonaktifkan", ResponseCode.UNPROCESSABLE_ENTITY);
+            }
+
+            if (reservation.realization_time) {
+                throw new HttpException("Reservasi telah diaktifkan", ResponseCode.UNPROCESSABLE_ENTITY);
+            }
+
+            await this.repository.activateByUUID(uuid);
+
+            return reservation;;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
