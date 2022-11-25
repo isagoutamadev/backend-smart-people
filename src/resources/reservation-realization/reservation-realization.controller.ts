@@ -30,7 +30,7 @@ export class ReservationRealizationController implements Controller {
         
         this.router.post(
             '/',
-            authMiddleware(),
+            // authMiddleware(),
             validate(RealizationSchema, ReqType.BODY),
             this.create
         );
