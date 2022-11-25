@@ -34,7 +34,7 @@ export class ReservationService {
             if (data) {
                 return data;
             }
-            throw new HttpException("Not Found", ResponseCode.NOT_FOUND);
+            throw new HttpException("Reservation Not Found", ResponseCode.NOT_FOUND);
         } catch (error) {
             throw error;
         }
@@ -63,7 +63,7 @@ export class ReservationService {
             if (data) {
                 return data;
             }
-            throw new HttpException("Not Found", ResponseCode.NOT_FOUND);
+            throw new HttpException("Reservation Not Found", ResponseCode.NOT_FOUND);
         } catch (error) {
             throw error;
         }
