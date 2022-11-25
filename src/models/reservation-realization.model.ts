@@ -10,6 +10,7 @@ export interface BodyReservationRealization {
 
 export interface SearchReservationRealization {
     sort_by?: string;
-    reservation_uuid: string;
+    reservation_uuid?: string;
+    reservation_id?: number;
     biometric?: string;
 }

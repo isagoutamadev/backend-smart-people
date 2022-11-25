@@ -15,4 +15,5 @@ export interface SearchReservation {
     uuid?: string,
     pic?: string,
     sort_by?: string,
+    fields?: string,
 }

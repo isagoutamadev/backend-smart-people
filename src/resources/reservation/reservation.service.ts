@@ -57,9 +57,9 @@ export class ReservationService {
         return {};
     }
     
-    public findCurrentActive = async (): Promise<Reservation> => {
+    public findCurrentActive = async (search: SearchReservation): Promise<Reservation> => {
         try {
-            const data = await this.repository.findCurrentActive(); 
+            const data = await this.repository.findCurrentActive(search); 
             if (data) {
                 return data;
             }
@@ -81,7 +81,7 @@ export class ReservationService {
             }
 
             if (reservation.realization_time) {
-                throw new HttpException("Reservasi telah diaktifkan", ResponseCode.UNPROCESSABLE_ENTITY);
+                return reservation;
             }
 
             await this.repository.activateByUUID(uuid);

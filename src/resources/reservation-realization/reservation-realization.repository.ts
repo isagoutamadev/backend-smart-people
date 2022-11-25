@@ -57,6 +57,9 @@ export class ReservationRealizationRepository {
             if (search.reservation_uuid) {
                 query.where("reservation.uuid", search.reservation_uuid);
             }
+            if (search.reservation_id) {
+                query.where("reservation.id", search.reservation_id);
+            }
             if (search.biometric) {
                 query.where("biometric", search.biometric);
             }

@@ -79,6 +79,29 @@ export class ReservationRepository {
     }
   }
 
+  async findByID(id: number): Promise<Reservation | undefined> {
+    try {
+      const select = [
+        "reservation.id",
+        "reservation.uuid",
+        "reservation.institution",
+        "reservation.institution_leader",
+        "reservation.pic",
+        "reservation.count",
+        "reservation.reservation_time",
+        "reservation.realization_time",
+        "reservation.deactivated_time",
+      ];
+      return await knex("m_reservations as reservation")
+        .select(select)
+        .where("id", id)
+        .whereNull("deleted_at")
+        .first();
+    } catch (error) {
+      throw error;
+    }
+  }
+  
   async findByUUID(uuid: string): Promise<Reservation | undefined> {
     try {
       const select = [
@@ -127,18 +150,27 @@ export class ReservationRepository {
     }
   }
 
-  async findCurrentActive(): Promise<Reservation | undefined> {
+  async findCurrentActive(search: SearchReservation): Promise<Reservation | undefined> {
     try {
-      const select = [
-        "reservation.id",
-        "reservation.uuid",
-        "reservation.institution",
-        "reservation.institution_leader",
-        "reservation.pic",
-        "reservation.count",
-        "reservation.reservation_time",
-        "reservation.realization_time",
-      ];
+      const select = [];
+
+      if (search.fields) {
+        search.fields.split(',').forEach(field => {
+          select.push('reservation.' + field);
+        });
+      } else {
+        select.push(...[
+          "reservation.id",
+          "reservation.uuid",
+          "reservation.institution",
+          "reservation.institution_leader",
+          "reservation.pic",
+          "reservation.count",
+          "reservation.reservation_time",
+          "reservation.realization_time",
+        ]);
+      }
+
       return await knex("m_reservations as reservation")
         .select(select)
         .whereNull("reservation.deactivated_time")

@@ -16,13 +16,12 @@ export class ReservationRealizationService {
         }
     }
 
-    public create = async (data: BodyReservationRealization): Promise<ReservationRealization> => {
+    public create = async (data: ReservationRealization): Promise<ReservationRealization> => {
         try {
-            const reservation = await this.reservationRepository.findByUUID(data.reservation_uuid);
+            const reservation = await this.reservationRepository.findByID(Number(data.reservation_id));
             if (!reservation) {
                 throw new HttpException("Reservation not found", ResponseCode.NOT_FOUND);
             }
-            console.log(reservation);
 
             if (!reservation.realization_time) {
                 throw new HttpException("Reservasi belum diaktifasi", ResponseCode.UNPROCESSABLE_ENTITY);
@@ -30,12 +29,6 @@ export class ReservationRealizationService {
             
             if (reservation.deactivated_time) {
                 throw new HttpException("Reservasi telah dinonaktifkan", ResponseCode.UNPROCESSABLE_ENTITY);
-            }
-            
-            const existData = await this.repository.find(data);
-            console.log(existData);
-            if (existData) {
-                throw new HttpException("Biometric already exist", ResponseCode.CONFLICT);
             }
 
             const dataInsert: ReservationRealization = {
@@ -47,6 +40,10 @@ export class ReservationRealizationService {
 
             return dataInsert;
         } catch (error) {
+            //@ts-ignore
+            if (error.message && error.message.includes('Duplicate')) {
+                throw new HttpException("Biometric already exist", ResponseCode.CONFLICT);
+            }
             throw error;
         }
     }

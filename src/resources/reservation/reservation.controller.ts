@@ -31,7 +31,7 @@ export class ReservationController implements Controller {
         
         this.router.get(
             '/current-active',
-            authMiddleware(),
+            // authMiddleware(),
             this.findCurrentActive
         );
         
@@ -182,8 +182,10 @@ export class ReservationController implements Controller {
         try {
 
             // const { uuid } = req.params;
+            const { fields } = req.query;
 
-            const result = await this.service.findCurrentActive();
+            // @ts-ignore
+            const result = await this.service.findCurrentActive({fields});
             
             return response.ok<Reservation>(result, res);
         } catch (err: any) {
