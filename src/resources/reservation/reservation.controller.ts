@@ -186,7 +186,9 @@ export class ReservationController implements Controller {
 
             // @ts-ignore
             const result = await this.service.findCurrentActive({fields});
-            
+            if (fields == 'id') {
+                return res.status(200).json(result);
+            }
             return response.ok<Reservation>(result, res);
         } catch (err: any) {
             return next(new HttpException(err.message, err.statusCode));
