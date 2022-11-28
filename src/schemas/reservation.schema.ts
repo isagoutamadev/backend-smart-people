@@ -8,6 +8,11 @@ export const ReservationSchema = Joi.object({
     reservation_time: Joi.string().isoDate().required(),
 });
 
+export const ReservationRealizationCountSchema = Joi.object({
+    id: Joi.number().min(1).required(),
+    realization_count: Joi.number().min(1).required(),
+});
+
 export const SearchReservationSchema = Joi.object({
     institution: Joi.string().min(3).max(50).required(),
     pic: Joi.string().min(3).max(50).required(),

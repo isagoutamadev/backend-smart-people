@@ -22,6 +22,8 @@ export function validate(schema: Schema, reqType: ReqType) {
                 result = err.details.map((detail) => detail.message);   
             }
 
+            console.log(result);
+
             return response.badRequest({
                 code: ResponseCode.BAD_REQUEST,
                 result

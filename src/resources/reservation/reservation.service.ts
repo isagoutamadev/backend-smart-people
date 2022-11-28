@@ -91,4 +91,13 @@ export class ReservationService {
             throw error;
         }
     }
+
+    public updateRealizationCount = async (data: Reservation): Promise<Reservation> => {
+        try {
+            await this.repository.updateRealizationCount(data);
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
 }

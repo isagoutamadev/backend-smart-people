@@ -19,7 +19,8 @@ export class ReservationRepository {
         "reservation.count",
         "reservation.reservation_time",
         "reservation.realization_time",
-        knex.raw("count(o.biometric) as realization_count"),
+        "reservation.realization_count"
+        // knex.raw("count(o.biometric) as realization_count"),
       ];
 
       const query = knex("m_reservations as reservation").select(select);
@@ -47,8 +48,6 @@ export class ReservationRepository {
         .count("id as total")
         .from(knex.raw(`(${query.toQuery()}) x`))
         .first();
-
-      select.push(knex.raw("count(o.biometric) as realization_count"));
 
       const [datas, count] = await Promise.all([
         await query.limit(limit).offset(offset),
@@ -200,6 +199,19 @@ export class ReservationRepository {
     } catch (error) {
       // If we get here, that means that neither the 'Old Books' catalogues insert,
       // nor any of the books inserts will have taken place.
+      throw error;
+    }
+  }
+
+  async updateRealizationCount(data: Reservation): Promise<void> {
+    try {
+      await knex("m_reservations")
+        .update({
+          realization_count: data.realization_count,
+          updated_at: knex.raw("now()"),
+        })
+        .where("id", data.id);
+    } catch (error) {
       throw error;
     }
   }

@@ -6,27 +6,22 @@ export class ReservationRealizationRepository {
     async get(search: SearchReservationRealization, page: number, limit: number, sort?: string): Promise<Paging<ReservationRealization>> {
         try {
             const select = [
-                "reservation.id",
-                "reservation.uuid",
-                "reservation.institution",
-                "reservation.pic",
-                "reservation.reservation_date",
-                "reservation.realization_date",
-                knex.raw("count(o.*) as realization_count")
+                "o.biometric",
+                "o.created_at",
+                "o.captured_picture",
             ];
 
-            const query = knex("m_reservations as reservation").select(select);
+            const query = knex("o_reservation_realizations as o").select(select);
 
-            query.leftJoin("o_reservation_realizations as o", "o.reservation_id", "reservation.id");
+            query.innerJoin("m_reservations as reservation", "reservation.id", "o.reservation_id");
 
-            query.groupBy("reservation.id");
-            const sortBy = search.sort_by || "reservation.institution";
+            const sortBy = search.sort_by || "o.created_at";
             const sortDirection = sort || "asc";
 
-            query.orderByRaw(sortBy + " " + sortDirection);
+            // query.orderByRaw(sortBy + " " + sortDirection);
 
             const offset = limit * page - limit;
-            const queryCount = knex().count("id as total").from(knex.raw(`${query.toQuery()} x`)).first();
+            const queryCount = knex().count("biometric as total").from(knex.raw(`(${query.toQuery()}) x`)).first();
 
             const [datas, count] = await Promise.all([
                 await query.limit(limit).offset(offset),

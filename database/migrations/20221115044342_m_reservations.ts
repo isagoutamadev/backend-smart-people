@@ -9,6 +9,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string("institution_leader").notNullable();
         table.string("pic").notNullable();
         table.integer("count").unsigned().notNullable();
+        table.integer("realization_count").defaultTo(0).unsigned().notNullable();
         table.dateTime("reservation_time").notNullable();
         table.timestamps();
         table.timestamp("deleted_at").nullable();

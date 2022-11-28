@@ -3,7 +3,7 @@ import { NextFunction, Router, Request, Response } from 'express';
 import response from '@/helpers/response.helper';
 import { ResponseCode } from '@/utils/responses/global.response';
 import { Reservation } from '@/models/reservation.model';
-import { ReservationSchema } from '@/schemas/reservation.schema';
+import { ReservationRealizationCountSchema, ReservationSchema } from '@/schemas/reservation.schema';
 import { validate, ReqType } from '@/middlewares/validate.middleware';
 import { authMiddleware } from '@/middlewares/auth.middleware';
 import HttpException from '@/utils/exceptions/http.exception';
@@ -69,6 +69,13 @@ export class ReservationController implements Controller {
             authMiddleware(),
             validate(UUIDSchema, ReqType.PARAMS),
             this.activate
+        );
+
+        this.router.post(
+            '/update-realization-count',
+            // authMiddleware(),
+            validate(ReservationRealizationCountSchema, ReqType.BODY),
+            this.updateRealizationCount
         );
     }
 
@@ -187,7 +194,10 @@ export class ReservationController implements Controller {
             // @ts-ignore
             const result = await this.service.findCurrentActive({fields});
             if (fields == 'id') {
-                return res.status(200).json(result);
+                return res.status(200).json({
+                    code: 200,
+                    ...result
+                });
             }
             return response.ok<Reservation>(result, res);
         } catch (err: any) {
@@ -205,6 +215,29 @@ export class ReservationController implements Controller {
             const { uuid } = req.params;
 
             const result = await this.service.activate(uuid);
+            
+            return response.ok<Reservation>(result, res);
+        } catch (err: any) {
+            return next(new HttpException(err.message, err.statusCode));
+        }
+    }
+
+    private updateRealizationCount = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): Promise<Response | void> => {
+        try {
+
+            // const { uuid } = req.params;
+
+            const data = {
+                // uuid,
+                ...req.body
+            };
+
+            // @ts-ignore
+            const result = await this.service.updateRealizationCount(data);
             
             return response.ok<Reservation>(result, res);
         } catch (err: any) {

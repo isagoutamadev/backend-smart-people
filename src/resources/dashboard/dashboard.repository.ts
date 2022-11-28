@@ -8,7 +8,8 @@ export class DashboardRepository {
             const queryMain = knex("m_reservations as reservation").select([
                 "reservation.id",
                 "reservation.count",
-                knex.raw("count(o.biometric) as realization_count"),
+                "reservation.realization_count",
+                // knex.raw("count(o.biometric) as realization_count"),
             ]);
             queryMain.leftJoin("o_reservation_realizations as o", "o.reservation_id", "reservation.id");
             queryMain.whereNull("reservation.deleted_at");
@@ -39,7 +40,8 @@ export class DashboardRepository {
                 "reservation.id",
                 "reservation.reservation_time",
                 "reservation.count as total_count_reservation",
-                knex.raw("count(o.biometric) as total_count_realization"),
+                "reservation.realization_count as total_count_realization",
+                // knex.raw("count(o.biometric) as total_count_realization"),
             ];
 
             const query = knex("m_reservations as reservation").select(select);

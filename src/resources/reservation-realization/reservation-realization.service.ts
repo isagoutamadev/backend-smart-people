@@ -10,7 +10,8 @@ export class ReservationRealizationService {
     private reservationRepository = new ReservationRepository();
     public get = async (search: ReservationRealization, page: number, limit: number): Promise<Paging<ReservationRealization>> => {
         try {
-            throw new HttpException("Not Found", ResponseCode.NOT_FOUND);
+            const result = await this.repository.get(search, page, limit);
+            return result;
         } catch (error) {
             throw error;
         }
@@ -33,7 +34,7 @@ export class ReservationRealizationService {
 
             const dataInsert: ReservationRealization = {
                 reservation_id: reservation.id,
-                biometric: data.biometric
+                biometric: reservation.id + '_' + data.biometric
             };
 
             await this.repository.create(dataInsert);

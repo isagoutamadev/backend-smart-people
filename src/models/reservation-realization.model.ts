@@ -1,5 +1,8 @@
+import { Reservation } from "./reservation.model";
+
 export interface ReservationRealization {
     reservation_id?: number;
+    reservation?: Reservation;
     biometric?: string;
 }
 

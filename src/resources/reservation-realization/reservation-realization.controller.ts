@@ -42,7 +42,11 @@ export class ReservationRealizationController implements Controller {
         next: NextFunction
     ): Promise<Response | void> => {
         try {
-            
+            const { limit, page } = req.query;
+
+            // @ts-ignore
+            const result = await this.service.get({}, page, limit);
+            return response.ok<Paging<ReservationRealization>>(result, res);
         } catch (err: any) {
             return next(new HttpException(err.message, err.statusCode));
         }

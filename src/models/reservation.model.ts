@@ -7,6 +7,7 @@ export interface Reservation {
     count?: number,
     reservation_time?: Date,
     realization_time?: Date,
+    realization_count?: number,
     deactivated_time?: Date,
 }
 
