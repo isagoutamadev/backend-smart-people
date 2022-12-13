@@ -5,7 +5,8 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("m_users").insert([
         { 
             uuid: "ab924e94-3f5e-49c9-be02-5896f1efc25b", 
-            email: "admin@konekthing.com", 
+            email: "admin@konekthing.com",
+            role_id: 1,
             username: "admin", 
             password: AuthHelper.encrypt("admin"),
         },

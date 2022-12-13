@@ -5,7 +5,7 @@ export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable("m_reservations", function (table) {
         table.increments("id").primary().notNullable();
         table.uuid("uuid").unique().notNullable();
-        table.string("institution").notNullable();
+        table.integer("institution_id").unsigned().notNullable().references("m_institutions.id");
         table.string("pic").notNullable();
         table.integer("count").unsigned().notNullable();
         table.date("reservation_date").notNullable();
