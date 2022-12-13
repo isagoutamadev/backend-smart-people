@@ -64,12 +64,13 @@ export class AuthController implements Controller {
     ): Promise<Response | void> => {
         try {
             const { auth } = res.app.locals;
+            console.log(auth);
 
-            // const result = await this.service.getDetail(auth.id);
+            const result = await this.service.getDetail(auth.uuid);
             
             return response.global<User>(res, {
                 code: ResponseCode.OK,
-                result: auth,
+                result: result,
             });
         } catch (err: any) {
             return next(new HttpException(err.message, err.statusCode));

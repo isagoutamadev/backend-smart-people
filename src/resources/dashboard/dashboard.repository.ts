@@ -12,6 +12,9 @@ export class DashboardRepository {
             ]);
             queryMain.leftJoin("o_reservation_realizations as o", "o.reservation_id", "reservation.id");
             queryMain.whereNull("reservation.deleted_at");
+            if (search.reservation_uuid) {
+                queryMain.where("reservation.uuid", search.reservation_uuid);
+            }
             queryMain.groupBy("reservation.id");
 
             const select = [
@@ -34,7 +37,7 @@ export class DashboardRepository {
         try {
             const select: any[] = [
                 "reservation.id",
-                "reservation.reservation_date",
+                "reservation.reservation_time",
                 "reservation.count as total_count_reservation",
                 knex.raw("count(o.biometric) as total_count_realization"),
             ];
@@ -42,6 +45,11 @@ export class DashboardRepository {
             const query = knex("m_reservations as reservation").select(select);
             query.leftJoin("o_reservation_realizations as o", "o.reservation_id", "reservation.id");
             query.whereNull("reservation.deleted_at");
+
+            if (search.reservation_uuid) {
+                query.where("reservation.uuid", search.reservation_uuid);
+            }
+
             query.groupBy("reservation.id");
 
             const selectGraph: any[] = [
@@ -52,7 +60,7 @@ export class DashboardRepository {
             if (search.group_time === 'monthly') {
                 selectGraph.push(knex.raw("CONVERT_TZ(CONCAT(YEAR(reservation_date), '-', MONTH(reservation_date), '-15 17:00:00'),'UTC','UTC') as datetime"));
             } else {
-                selectGraph.push("reservation_date as datetime");
+                selectGraph.push("reservation_time as datetime");
             }
             const queryGraph = knex().select(selectGraph).from(knex.raw(`(${query.toQuery()}) data`)).groupByRaw("datetime").orderByRaw("datetime asc");
 

@@ -6,6 +6,7 @@ export class AuthRepository {
         try {
             const select = [
                 "user.id",
+                "user.uuid",
                 "user.email",
                 "user.username",
                 "user.password",
@@ -13,6 +14,31 @@ export class AuthRepository {
 
             const query = knex("m_users as user").select(select)
             .where("user.email", useremail).orWhere("user.username", useremail)
+            .first();
+
+            const user = await query
+            if (user) {
+                return {
+                    ...user,
+                }
+            }
+            return undefined;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    public findbyUUID = async (uuid: string): Promise<User|undefined> => {
+        try {
+            const select = [
+                "user.id",
+                "user.uuid",
+                "user.email",
+                "user.username",
+            ];
+
+            const query = knex("m_users as user").select(select)
+            .where("user.uuid", uuid)
             .first();
 
             const user = await query

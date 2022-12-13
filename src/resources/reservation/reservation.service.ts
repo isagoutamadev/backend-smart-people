@@ -19,6 +19,7 @@ export class ReservationService {
         try {
             data.uuid = uuidV4();
             data.institution = String(data.institution).toUpperCase();
+            data.institution_leader = String(data.institution_leader).toUpperCase();
             data.pic = String(data.pic).toUpperCase();
             await this.repository.create(data);
             return data;
@@ -42,6 +43,7 @@ export class ReservationService {
     public update = async (data: Reservation): Promise<Reservation> => {
         try {
             data.institution = String(data.institution).toUpperCase();
+            data.institution_leader = String(data.institution_leader).toUpperCase();
             data.pic = String(data.pic).toUpperCase();
             await this.repository.update(data);
             return data;
@@ -53,5 +55,40 @@ export class ReservationService {
     public delete = async (uuid: string): Promise<Reservation> => {
         await this.repository.deleteByUUID(uuid);
         return {};
+    }
+    
+    public findCurrentActive = async (): Promise<Reservation> => {
+        try {
+            const data = await this.repository.findCurrentActive(); 
+            if (data) {
+                return data;
+            }
+            throw new HttpException("Not Found", ResponseCode.NOT_FOUND);
+        } catch (error) {
+            throw error;
+        }
+    }
+    
+    public activate = async (uuid: string): Promise<Reservation> => {
+        try {
+            const reservation = await this.repository.findByUUID(uuid);
+            if (!reservation) {
+                throw new HttpException("Reservation not found", ResponseCode.NOT_FOUND);
+            }
+
+            if (reservation.deactivated_time) {
+                throw new HttpException("Reservasi telah dinonaktifkan", ResponseCode.UNPROCESSABLE_ENTITY);
+            }
+
+            if (reservation.realization_time) {
+                throw new HttpException("Reservasi telah diaktifkan", ResponseCode.UNPROCESSABLE_ENTITY);
+            }
+
+            await this.repository.activateByUUID(uuid);
+
+            return reservation;;
+        } catch (error) {
+            throw error;
+        }
     }
 }

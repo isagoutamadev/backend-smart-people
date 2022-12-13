@@ -5,6 +5,8 @@ import AuthHelper from "@/helpers/auth.helper";
 export function authMiddleware() {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
+
+            // console.log(req.headers.authorization);
             
             const authorization = req.headers.authorization || "";
             let token = authorization.replace("Basic ", "");

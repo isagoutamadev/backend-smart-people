@@ -7,4 +7,6 @@ export async function seed(knex: Knex): Promise<void> {
     await knex("lt_districts").del();
     await knex("lt_regencies").del();
     await knex("lt_provinces").del();
+    await knex("m_institutions").del();
+    await knex("m_reservations").del();
 };

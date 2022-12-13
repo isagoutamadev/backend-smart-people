@@ -14,4 +14,5 @@ export interface SearchDasboardReservationRealization {
     start_date?: Date;
     end_date?: Date;
     group_time?: string;
+    reservation_uuid?: string;
 }
