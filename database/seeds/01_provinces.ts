@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import * as provinces from "./provinces.json"
+import {default as provinces} from "./provinces.json"
 
 export async function seed(knex: Knex): Promise<void> {
     // Inserts seed entries

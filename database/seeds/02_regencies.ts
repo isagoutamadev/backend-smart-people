@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import * as regencies from "./regencies.json";
+import { default as regencies} from "./regencies.json";
 
 export async function seed(knex: Knex): Promise<void> {
     // Inserts seed entries
