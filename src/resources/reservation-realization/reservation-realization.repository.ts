@@ -8,7 +8,7 @@ export class ReservationRealizationRepository {
             const select = [
                 "reservation.id",
                 "reservation.uuid",
-                "reservation.institution",
+                "reservation.leader",
                 "reservation.pic",
                 "reservation.reservation_date",
                 "reservation.realization_date",
@@ -20,10 +20,10 @@ export class ReservationRealizationRepository {
             query.leftJoin("o_reservation_realizations as o", "o.reservation_id", "reservation.id");
 
             query.groupBy("reservation.id");
-            const sortBy = search.sort_by || "reservation.institution";
-            const sortDirection = sort || "asc";
+            // const sortBy = search.sort_by || "reservation.institution";
+            // const sortDirection = sort || "asc";
 
-            query.orderByRaw(sortBy + " " + sortDirection);
+            // query.orderByRaw(sortBy + " " + sortDirection);
 
             const offset = limit * page - limit;
             const queryCount = knex().count("id as total").from(knex.raw(`${query.toQuery()} x`)).first();

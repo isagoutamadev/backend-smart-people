@@ -76,12 +76,8 @@ export class ReservationService {
                 throw new HttpException("Reservation not found", ResponseCode.NOT_FOUND);
             }
 
-            if (reservation.deactivated_time) {
-                throw new HttpException("Reservasi telah dinonaktifkan", ResponseCode.UNPROCESSABLE_ENTITY);
-            }
-
             if (reservation.realization_time) {
-                throw new HttpException("Reservasi telah diaktifkan", ResponseCode.UNPROCESSABLE_ENTITY);
+                return reservation;
             }
 
             await this.repository.activateByUUID(uuid);

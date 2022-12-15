@@ -22,20 +22,9 @@ export class ReservationRealizationService {
             if (!reservation) {
                 throw new HttpException("Reservation not found", ResponseCode.NOT_FOUND);
             }
-            console.log(reservation);
 
             if (!reservation.realization_time) {
                 throw new HttpException("Reservasi belum diaktifasi", ResponseCode.UNPROCESSABLE_ENTITY);
-            }
-            
-            if (reservation.deactivated_time) {
-                throw new HttpException("Reservasi telah dinonaktifkan", ResponseCode.UNPROCESSABLE_ENTITY);
-            }
-            
-            const existData = await this.repository.find(data);
-            console.log(existData);
-            if (existData) {
-                throw new HttpException("Biometric already exist", ResponseCode.CONFLICT);
             }
 
             const dataInsert: ReservationRealization = {

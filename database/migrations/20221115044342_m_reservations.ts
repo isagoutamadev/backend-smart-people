@@ -11,9 +11,8 @@ export async function up(knex: Knex): Promise<void> {
         table.integer("count").unsigned().notNullable();
         table.dateTime("reservation_time").notNullable();
         table.timestamps();
-        table.timestamp("deleted_at").nullable();
         table.timestamp("realization_time").nullable();
-        table.timestamp("deactivated_time").nullable();
+        table.timestamp("deleted_at").nullable();
     });
 }
 

@@ -13,8 +13,6 @@ export class ReservationRepository {
       const select: Array<any> = [
         "reservation.id",
         "reservation.uuid",
-        "reservation.institution",
-        "reservation.institution_leader",
         "reservation.pic",
         "reservation.count",
         "reservation.reservation_time",
@@ -84,13 +82,11 @@ export class ReservationRepository {
       const select = [
         "reservation.id",
         "reservation.uuid",
-        "reservation.institution",
-        "reservation.institution_leader",
+        "reservation.leader",
         "reservation.pic",
         "reservation.count",
         "reservation.reservation_time",
         "reservation.realization_time",
-        "reservation.deactivated_time",
       ];
       return await knex("m_reservations as reservation")
         .select(select)
@@ -132,8 +128,7 @@ export class ReservationRepository {
       const select = [
         "reservation.id",
         "reservation.uuid",
-        "reservation.institution",
-        "reservation.institution_leader",
+        "reservation.leader",
         "reservation.pic",
         "reservation.count",
         "reservation.reservation_time",
@@ -141,7 +136,6 @@ export class ReservationRepository {
       ];
       return await knex("m_reservations as reservation")
         .select(select)
-        .whereNull("reservation.deactivated_time")
         .whereNotNull("reservation.realization_time")
         .whereNull("deleted_at")
         .first();
