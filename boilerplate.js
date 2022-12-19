@@ -2,8 +2,14 @@ const { exec } = require('node:child_process');
 const { CONTROLLER, SERVICE, REPOSITORY, MODEL, SCHEMA } = require('./template');
 const args = process.argv.slice(2);
 const moduleName = args[1].toLowerCase();
-
-const modelName = moduleName[0].toUpperCase() + moduleName.slice(1);
+let modelName = '';
+const moduleSplit = moduleName.split('-');
+moduleSplit.forEach(str => {
+    modelName += str[0].toUpperCase() + str.slice(1);
+});
+// modelName = moduleName[0].toUpperCase() + moduleName.slice(1);
+// if (moduleName.includes('-')) {
+// }
 const controllerName = modelName + 'Controller';
 const serviceName = modelName + 'Service';
 const repositoryName = modelName + 'Repository';
