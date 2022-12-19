@@ -7,7 +7,6 @@ export async function up(knex: Knex): Promise<void> {
         table.uuid("uuid").unique().notNullable();
         table.integer("institution_id").unsigned().notNullable().references("m_institutions.id");
         table.string("leader").notNullable();
-        table.string("pic").notNullable();
         table.integer("count").unsigned().notNullable();
         table.dateTime("reservation_time").notNullable();
         table.timestamps();
