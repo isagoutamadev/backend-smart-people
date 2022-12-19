@@ -6,7 +6,7 @@ export async function up(knex: Knex): Promise<void> {
         table.increments("id").primary().notNullable();
         table.uuid("uuid").unique().notNullable();
         table.integer("provinces_id").unsigned().notNullable().references("lt_provinces.id");
-        table.integer("user_id").unsigned().unique().nullable().references("m_users.id");
+        table.integer("user_id").unsigned().references("m_users.id");
         table.integer("created_by").unsigned().notNullable().references("m_users.id");
         table.integer("updated_by").unsigned().nullable().references("m_users.id");
         table.integer("deleted_by").unsigned().nullable().references("m_users.id");
